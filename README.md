@@ -5,4 +5,4 @@ Backend in express
 $ npm run dev
 
 # .env file
-PORT=<som port>
+PORT="som port"
