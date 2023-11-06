@@ -1,4 +1,8 @@
 # Boatmaneger-Backend
 Backend in express
 
-$ node index.ts
+# Run development build
+$ npm run dev
+
+# .env file
+PORT=<som port>
