@@ -4,12 +4,10 @@ import { temperature } from "../../postgresql/boatEnv";
 
 const controller = Router();
 
-const db = useDrizzleORM();
-
-controller.post("temperature", async (req: Request, res: Response) => {
-  await db.insert(temperature).values({
+controller.post("/temperature", async (req: Request, res: Response) => {
+  await useDrizzleORM().insert(temperature).values({
     value: req.body.value,
-    timestamp: req.body.timestamp,
+    // timestamp: req.body.timestamp,
   });
   res.status(201).send("new temp inserted");
 });
