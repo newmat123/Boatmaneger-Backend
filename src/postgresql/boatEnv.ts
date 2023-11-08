@@ -1,21 +1,16 @@
-import { numeric, pgSchema, serial, timestamp } from "drizzle-orm/pg-core";
+import {
+  numeric,
+  pgTable,
+  serial,
+  timestamp,
+  boolean,
+} from "drizzle-orm/pg-core";
 
-export const $boatEnv = pgSchema("boatEnv");
-
-export const temperature = $boatEnv.table("temperature", {
+export const environment = pgTable("environment", {
   id: serial("id").primaryKey(),
-  value: numeric("value"),
-  timestamp: timestamp("timestamp").defaultNow(),
-});
-
-export const heat = $boatEnv.table("heat", {
-  id: serial("id").primaryKey(),
-  value: numeric("value"),
-  timestamp: timestamp("timestamp").defaultNow(),
-});
-
-export const humidity = $boatEnv.table("humidity", {
-  id: serial("id").primaryKey(),
-  value: numeric("value"),
+  temperature: numeric("temperature"),
+  heat: numeric("heat"),
+  humidity: numeric("humidity"),
+  waterInBilge: boolean("waterInBilge"),
   timestamp: timestamp("timestamp").defaultNow(),
 });

@@ -1,5 +1,5 @@
 import { Express, Request, Response } from "express";
-import typeormProductsRouter from "../controllers/drizzleorm/boatEnv.controller";
+import drizzleEnvironmentRouter from "../controllers/drizzleorm/boatEnv.controller";
 
 const routerSetup = (app: Express) =>
   app
@@ -9,6 +9,6 @@ const routerSetup = (app: Express) =>
     .get("/about", async (req: Request, res: Response) => {
       res.send("About route");
     })
-    .use("/api/boatEnv", typeormProductsRouter);
+    .use("/api/boatEnv", drizzleEnvironmentRouter);
 
 export default routerSetup;
