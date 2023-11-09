@@ -1,6 +1,6 @@
 import { NodePgDatabase, drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
-// import { migrate } from "drizzle-orm/postgres-js/migrator"; uncomment to migrate db
+// import { migrate } from "drizzle-orm/postgres-js/migrator"; // uncomment to migrate db
 
 let db: NodePgDatabase<Record<string, never>>;
 
@@ -19,7 +19,7 @@ export default async function drizzleORMConnect(): Promise<void> {
 
   await client.connect();
   db = drizzle(client);
-  // await migrate(db, { migrationsFolder: "drizzle" }); uncomment to migrate db
+  // await migrate(db, { migrationsFolder: "drizzle" }); // uncomment to migrate db
 }
 
 export function useDrizzleORM(): NodePgDatabase<Record<string, never>> {

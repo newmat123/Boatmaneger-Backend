@@ -1,4 +1,4 @@
-import { Express, Request, Response } from "express";
+import { Express } from "express";
 import drizzleEnvironmentRouter from "../controllers/boatEnv.controller";
 
 const routerSetup = (app: Express) =>

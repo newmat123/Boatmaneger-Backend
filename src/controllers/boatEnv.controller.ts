@@ -11,7 +11,7 @@ controller.post("/environment", async (req: Request, res: Response) => {
     temperature: req.body.temperature,
     heat: req.body.heat,
     humidity: req.body.humidity,
-    waterInBilge: req.body.waterInBilge,
+    bilgeStatus: req.body.bilgeStatus,
   });
   res.status(201).send("new temp inserted");
 });
@@ -68,12 +68,12 @@ controller.get("/humidity", async (req: Request, res: Response) => {
   res.status(201).send(result);
 });
 
-controller.get("/waterInBilge", async (req: Request, res: Response) => {
+controller.get("/bilgeStatus", async (req: Request, res: Response) => {
   const take = validateTake(req);
   const result = await useDrizzleORM()
     .select({
       id: environment.id,
-      waterInBilge: environment.waterInBilge,
+      bilgeStatus: environment.bilgeStatus,
       timestamp: environment.timestamp,
     })
     .from(environment)
