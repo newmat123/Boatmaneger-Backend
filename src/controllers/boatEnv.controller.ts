@@ -30,7 +30,7 @@ controller.get("/temperature", async (req: Request, res: Response) => {
   const take = validateTake(req);
   const result = await useDrizzleORM()
     .select({
-      id: environment.id,
+      // id: environment.id,
       temperature: environment.temperature,
       timestamp: environment.timestamp,
     })
@@ -44,7 +44,7 @@ controller.get("/heat", async (req: Request, res: Response) => {
   const take = validateTake(req);
   const result = await useDrizzleORM()
     .select({
-      id: environment.id,
+      // id: environment.id,
       heat: environment.heat,
       timestamp: environment.timestamp,
     })
@@ -58,7 +58,7 @@ controller.get("/humidity", async (req: Request, res: Response) => {
   const take = validateTake(req);
   const result = await useDrizzleORM()
     .select({
-      id: environment.id,
+      // id: environment.id,
       humidity: environment.humidity,
       timestamp: environment.timestamp,
     })
@@ -72,7 +72,7 @@ controller.get("/bilgeStatus", async (req: Request, res: Response) => {
   const take = validateTake(req);
   const result = await useDrizzleORM()
     .select({
-      id: environment.id,
+      // id: environment.id,
       bilgeStatus: environment.bilgeStatus,
       timestamp: environment.timestamp,
     })
