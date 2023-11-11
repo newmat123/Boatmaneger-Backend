@@ -1,4 +1,4 @@
-# Boatmaneger-Backend
+# MYBoat-Backend
 
 Backend in express with drizzle
 
