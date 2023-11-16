@@ -12,5 +12,5 @@ export const environment = pgTable("environment", {
   heat: numeric("heat", { precision: 5, scale: 2 }),
   humidity: numeric("humidity", { precision: 5, scale: 2 }),
   bilgeStatus: boolean("bilgeStatus"),
-  timestamp: timestamp("timestamp").defaultNow(),
+  timestamp: timestamp("timestamp", { withTimezone: true }).defaultNow(),
 });
