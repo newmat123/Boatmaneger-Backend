@@ -7,9 +7,10 @@ const appSetup = async (app: Express) => {
 
     console.log("Databases connected successfully!");
     const port = Number(process.env.PORT) || 3000;
+    const ip = process.env.LOCAL_IP || "127.0.0.0";
 
-    app.listen(port, () => {
-      console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+    app.listen(port, ip, () => {
+      console.log(`⚡️[server]: Server is running at http://${ip}:${port}`);
     });
   } catch (error: unknown) {
     console.log("Unable to start the app!");
