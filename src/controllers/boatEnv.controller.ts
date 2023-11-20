@@ -1,10 +1,12 @@
 import { Router, Request, Response } from "express";
 import { useDrizzleORM } from "../postgresql/index";
 import { environment } from "../postgresql/boatEnv";
-import { desc } from "drizzle-orm";
+import { desc, sql } from "drizzle-orm";
 import { validateTake } from "./utils";
 
 const controller = Router();
+
+var resetBilgeStatus = false;
 
 controller.post("/environment", async (req: Request, res: Response) => {
   try {
@@ -37,10 +39,15 @@ controller.get("/environment", async (req: Request, res: Response) => {
       .from(environment)
       .orderBy(desc(environment.id))
       .limit(take);
-    res.status(201).send(result);
+
+    if (result.length === 0) {
+      return res.status(404).send("No records found");
+    }
+
+    res.status(200).send(result);
   } catch {
     res
-      .status(401)
+      .status(500)
       .send("somthing went wrong, couldn't fetch data from /environment");
   }
 });
@@ -50,17 +57,21 @@ controller.get("/temperature", async (req: Request, res: Response) => {
     const take = validateTake(req);
     const result = await useDrizzleORM()
       .select({
-        // id: environment.id,
         temperature: environment.temperature,
         timestamp: environment.timestamp,
       })
       .from(environment)
       .orderBy(desc(environment.id))
       .limit(take);
-    res.status(201).send(result);
+
+    if (result.length === 0) {
+      return res.status(404).send("No records found");
+    }
+
+    res.status(200).send(result);
   } catch {
     res
-      .status(402)
+      .status(500)
       .send("somthing went wrong, couldn't fetch data from /temperature");
   }
 });
@@ -70,16 +81,20 @@ controller.get("/heat", async (req: Request, res: Response) => {
     const take = validateTake(req);
     const result = await useDrizzleORM()
       .select({
-        // id: environment.id,
         heat: environment.heat,
         timestamp: environment.timestamp,
       })
       .from(environment)
       .orderBy(desc(environment.id))
       .limit(take);
-    res.status(201).send(result);
+
+    if (result.length === 0) {
+      return res.status(404).send("No records found");
+    }
+
+    res.status(200).send(result);
   } catch {
-    res.status(403).send("somthing went wrong, couldn't fetch data from /heat");
+    res.status(500).send("somthing went wrong, couldn't fetch data from /heat");
   }
 });
 
@@ -88,17 +103,21 @@ controller.get("/humidity", async (req: Request, res: Response) => {
     const take = validateTake(req);
     const result = await useDrizzleORM()
       .select({
-        // id: environment.id,
         humidity: environment.humidity,
         timestamp: environment.timestamp,
       })
       .from(environment)
       .orderBy(desc(environment.id))
       .limit(take);
-    res.status(201).send(result);
+
+    if (result.length === 0) {
+      return res.status(404).send("No records found");
+    }
+
+    res.status(200).send(result);
   } catch {
     res
-      .status(404)
+      .status(500)
       .send("somthing went wrong, couldn't fetch data from /humidity");
   }
 });
@@ -108,17 +127,55 @@ controller.get("/bilgeStatus", async (req: Request, res: Response) => {
     const take = validateTake(req);
     const result = await useDrizzleORM()
       .select({
-        // id: environment.id,
         bilgeStatus: environment.bilgeStatus,
         timestamp: environment.timestamp,
       })
       .from(environment)
       .orderBy(desc(environment.id))
       .limit(take);
-    res.status(201).send(result);
+
+    if (result.length === 0) {
+      return res.status(404).send("No records found");
+    }
+
+    res.status(200).send(result);
   } catch {
     res
-      .status(405)
+      .status(500)
+      .send("somthing went wrong, couldn't fetch data from /bilgeStatus");
+  }
+});
+
+controller.put("/resetBilgeStatus", async (req: Request, res: Response) => {
+  try {
+    const result = await useDrizzleORM()
+      .update(environment)
+      .set({ bilgeStatus: false })
+      .where(sql`id=(SELECT max(id) FROM environment)`)
+      .returning({
+        bilgeStatus: environment.bilgeStatus,
+        timestamp: environment.timestamp,
+      });
+
+    if (result.length === 0) {
+      return res.status(404).send("No records found");
+    }
+    resetBilgeStatus = true;
+    res.status(200).send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Something went wrong, couldn't update bilgeStatus");
+  }
+});
+
+controller.get("/tasks", async (req: Request, res: Response) => {
+  try {
+    const tasks = resetBilgeStatus;
+    resetBilgeStatus = false;
+    res.status(200).send(tasks);
+  } catch {
+    res
+      .status(500)
       .send("somthing went wrong, couldn't fetch data from /bilgeStatus");
   }
 });
