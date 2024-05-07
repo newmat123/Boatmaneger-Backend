@@ -14,3 +14,9 @@ export const environment = pgTable("environment", {
   bilgeStatus: boolean("bilgeStatus"),
   timestamp: timestamp("timestamp", { withTimezone: true }).defaultNow(),
 });
+
+export const controlPanel = pgTable("controlPanel", {
+  id: serial("id").primaryKey(),
+  light: boolean("light"),
+  heater: boolean("heater"),
+});

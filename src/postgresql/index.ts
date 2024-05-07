@@ -1,4 +1,4 @@
-import { NodePgDatabase, drizzle } from "drizzle-orm/node-postgres";
+import { NodePgDatabase, drizzle } from "drizzle-orm/node-postgres"; //drizzle
 import { Client } from "pg";
 // import { migrate } from "drizzle-orm/postgres-js/migrator"; // uncomment to migrate db
 
@@ -19,9 +19,10 @@ export default async function drizzleORMConnect(): Promise<void> {
 
   await client.connect();
   db = drizzle(client);
-  // await migrate(db, { migrationsFolder: "drizzle" }); // uncomment to migrate db
+  // await migrate(db, { migrationsFolder: "./drizzle" }); // uncomment to migrate db
 }
 
+// postgres://cecvqokn:841weJLsQN3BG0flCejgAl7Dvpr4pgn-@hattie.db.elephantsql.com/cecvqokn
 export function useDrizzleORM(): NodePgDatabase<Record<string, never>> {
   if (!db) {
     throw new Error("DrizzleORM has not been initialized!");

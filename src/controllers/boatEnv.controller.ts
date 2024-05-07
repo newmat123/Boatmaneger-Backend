@@ -1,12 +1,17 @@
 import { Router, Request, Response } from "express";
 import { useDrizzleORM } from "../postgresql/index";
-import { environment } from "../postgresql/boatEnv";
+import { controlPanel, environment } from "../postgresql/boatEnv";
 import { desc, sql } from "drizzle-orm";
 import { validateTake } from "./utils";
 
 const controller = Router();
 
 var resetBilgeStatus = false;
+
+// var controlPanel = {
+//   light: false,
+//   heater: false,
+// };
 
 controller.post("/environment", async (req: Request, res: Response) => {
   try {
@@ -162,6 +167,31 @@ controller.put("/resetBilgeStatus", async (req: Request, res: Response) => {
     }
     resetBilgeStatus = true;
     res.status(200).send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Something went wrong, couldn't update bilgeStatus");
+  }
+});
+
+controller.put("/controlPanel", async (req: Request, res: Response) => {
+  try {
+    console.log("req.body.data");
+    console.log(req.body.data);
+
+    const result = await useDrizzleORM()
+      .update(controlPanel)
+      .set(req.body.data)
+      .where(sql`id=(SELECT max(id) FROM environment)`)
+      .returning({
+        light: controlPanel.light,
+        heater: controlPanel.heater,
+      });
+    if (result.length === 0) {
+      await useDrizzleORM().insert(environment).values(req.body.data);
+      res.status(201).send("new control panel inserted");
+    }
+    // controlPanel = req.body.data;
+    res.status(200).send();
   } catch (error) {
     console.error(error);
     res.status(500).send("Something went wrong, couldn't update bilgeStatus");
