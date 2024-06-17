@@ -4,6 +4,7 @@ import {
   serial,
   timestamp,
   boolean,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const environment = pgTable("environment", {
@@ -15,8 +16,10 @@ export const environment = pgTable("environment", {
   timestamp: timestamp("timestamp", { withTimezone: true }).defaultNow(),
 });
 
-export const controlPanel = pgTable("controlPanel", {
+export const controlPanelSwitches = pgTable("controlPanelSwitches", {
   id: serial("id").primaryKey(),
-  light: boolean("light"),
-  heater: boolean("heater"),
+  switchId: serial("switchId"),
+  name: varchar('name'),
+  state: boolean("state"),
+  synced: boolean("synced").default(true),
 });
