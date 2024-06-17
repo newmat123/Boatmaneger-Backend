@@ -2,23 +2,17 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres"; //drizzle
 import { Client } from "pg";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
-import * as schema from "./postgresql/boatEnv";
-// import { migrateDb } from "./postgresql";
+import * as schema from './myBoat';
 
-// await migrateDb();
-
-// using xata.io
-
-//yarn tsx src/migrate.ts
 async function migrateDb(): Promise<void> {
-  const URL = process.env.PGSQL_URI;
   const client = new Client({
-    connectionString: URL,
+    connectionString: process.env.DATABASE_URL,
   });
 
   await client.connect();
   const db = drizzle(client, { schema });
-  await migrate(db, { migrationsFolder: "./drizzle" }); // uncomment to migrate db
+  // const db = drizzle(client);
+  await migrate(db, { migrationsFolder: "./drizzle" });
   client.end();
 }
 
