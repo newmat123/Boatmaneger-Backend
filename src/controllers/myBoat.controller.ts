@@ -172,7 +172,7 @@ controller.get("/switches", async (req: Request, res: Response) => {
   try {
     const result = await useDrizzleORM()
       .select({
-        id: controlPanelSwitches.switchId,
+        switchId: controlPanelSwitches.switchId,
         name: controlPanelSwitches.name,
         state: controlPanelSwitches.state,
       })
@@ -196,7 +196,7 @@ controller.put("/switch", async (req: Request, res: Response) => {
     const result = await useDrizzleORM()
       .update(controlPanelSwitches)
       .set({state: req.body.state, synced: false})
-      .where(eq(controlPanelSwitches.switchId, req.body.id))
+      .where(eq(controlPanelSwitches.switchId, req.body.switchId))
       .returning({
         name: controlPanelSwitches.name,
         state: controlPanelSwitches.state,
@@ -215,7 +215,7 @@ controller.get("/unSyncSwitches", async (req: Request, res: Response) => {
   try {
     const result = await useDrizzleORM()
       .select({
-        id: controlPanelSwitches.switchId,
+        switchId: controlPanelSwitches.switchId,
         name: controlPanelSwitches.name,
         state: controlPanelSwitches.state,
       })
@@ -231,7 +231,7 @@ controller.get("/unSyncSwitches", async (req: Request, res: Response) => {
       await useDrizzleORM()
         .update(controlPanelSwitches)
         .set({synced: true})
-        .where(eq(controlPanelSwitches.switchId, result[i].id)) 
+        .where(eq(controlPanelSwitches.switchId, result[i].switchId)) 
     }
 
     res.status(200).send(result);
@@ -253,7 +253,7 @@ controller.put("/unSyncSwitches", async (req: Request, res: Response) => {
       const result = await useDrizzleORM()
       .update(controlPanelSwitches)
       .set({state: switches[i].state, synced: true})
-      .where(eq(controlPanelSwitches.switchId, switches[i].id))
+      .where(eq(controlPanelSwitches.switchId, switches[i].switchId))
       .returning({
         name: controlPanelSwitches.name,
         state: controlPanelSwitches.state,
@@ -262,7 +262,7 @@ controller.put("/unSyncSwitches", async (req: Request, res: Response) => {
         await useDrizzleORM().insert(controlPanelSwitches).values({
           name: switches[i].name,
           state: switches[i].state,
-          switchId: switches[i].id,
+          switchId: switches[i].switchId,
         });
       }
     }
