@@ -223,10 +223,6 @@ controller.get("/unSyncSwitches", async (req: Request, res: Response) => {
       .where(eq(controlPanelSwitches.synced, false))
       .orderBy(desc(controlPanelSwitches.switchId))
 
-    if (result.length === 0) {
-      return res.status(404).send("No records found");
-    }
-    
     for (let i = 0; i < result.length; i++) {
       await useDrizzleORM()
         .update(controlPanelSwitches)
@@ -252,7 +248,7 @@ controller.put("/unSyncSwitches", async (req: Request, res: Response) => {
     for (let i = 0; i < switches.length; i++) {
       const result = await useDrizzleORM()
       .update(controlPanelSwitches)
-      .set({state: switches[i].state, synced: true})
+      .set({name: switches[i].name, state: switches[i].state, synced: true})
       .where(eq(controlPanelSwitches.switchId, switches[i].switchId))
       .returning({
         name: controlPanelSwitches.name,
