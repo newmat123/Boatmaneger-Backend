@@ -3,4 +3,3 @@ node_modules
 dist
 drizzle
 drizzle.config.js
-compose.yaml

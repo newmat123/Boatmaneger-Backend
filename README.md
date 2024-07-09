@@ -17,5 +17,8 @@ $ yarn studio
 ## .env file
 
 PORT="som port"
-PGSQL_URI="postgres://"
 LOCAL_IP="IPv4"
+DATABASE_URL="url"
+POSTGRES_USER="xxx"
+POSTGRES_PASSWORD="xxx"
+POSTGRES_DB="xxx"
